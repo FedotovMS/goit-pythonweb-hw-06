@@ -113,15 +113,58 @@ def select_10(session: Session, student_id: int, teacher_id: int):
 if __name__ == "__main__":
     session: Session = SessionLocal()
 
-    print("Знаходимо 5 студентів із найбільшим середнім балом з усіх предметів:", select_01(session))
-    print("Знаходимо студента із найвищим середнім балом з певного предмета:", select_02(session, 2))
-    print("Знаходимо середній бал у групах з певного предмета:", select_03(session, 2))
-    print("Знаходимо середній бал на потоці:", select_04(session))
-    print("Знаходимо які курси читає певний викладач:", select_05(session, 1))
-    print("Знаходимо список студентів у певній групі:", select_06(session, 3))
-    print("Знаходимо оцінки студентів у окремій групі з певного предмета:", select_07(session, 3, 1))
-    print("Знаходимо середній бал, який ставить певний викладач зі своїх предметів:", select_08(session, 1))
-    print("Знаходимо список курсів, які відвідує певний студент:", select_09(session, 1))
-    print("Список курсів, які певному студенту читає певний викладач:", select_10(session, 1, 2))
+    # Виведення результатів
+    print("1. 5 студентів із найбільшим середнім балом з усіх предметів:")
+    students_avg_grades = select_01(session)
+    for student in students_avg_grades:
+        print(f"  {student[0]}: {student[1]:.2f}")
+    
+    print("\n2. Студент із найвищим середнім балом з предмета (ID = 2):")
+    best_student_subject = select_02(session, 2)
+    print(f"  {best_student_subject[0]}: {best_student_subject[1]:.2f}")
+    
+    print("\n3. Середній бал у групах з предмета (ID = 2):")
+    groups_avg_grades = select_03(session, 2)
+    for group in groups_avg_grades:
+        print(f"  {group[0]}: {group[1]:.2f}")
+    
+    print("\n4. Середній бал на потоці:")
+    overall_avg_grade = select_04(session)
+    print(f"  {overall_avg_grade:.2f}")
+    
+    print("\n5. Курси, які читає викладач (ID = 1):")
+    courses_teacher = select_05(session, 1)
+    for course in courses_teacher:
+        print(f"  {course[0]}")
+    
+    print("\n6. Список студентів у групі (ID = 3):")
+    group_students = select_06(session, 3)
+    if group_students:
+        for student in group_students:
+            print(f"  {student[0]}")
+    else:
+        print("  У цій групі немає студентів.")
+    
+    print("\n7. Оцінки студентів у групі (ID = 3) з предмета (ID = 1):")
+    student_grades = select_07(session, 3, 1)
+    if student_grades:
+        for record in student_grades:
+            print(f"  {record[0]}: {record[1]} (Date: {record[2]})")
+    else:
+        print("  Немає оцінок для цієї групи та предмета.")
+    
+    print("\n8. Середній бал викладача (ID = 1) з його предметів:")
+    avg_teacher_grade = select_08(session, 1)
+    print(f"  {avg_teacher_grade:.2f}")
+    
+    print("\n9. Список курсів, які відвідує студент (ID = 1):")
+    student_courses = select_09(session, 1)
+    for course in student_courses:
+        print(f"  {course[0]}")
+    
+    print("\n10. Курси, які студент (ID = 1) відвідує у викладача (ID = 2):")
+    student_teacher_courses = select_10(session, 1, 2)
+    for course in student_teacher_courses:
+        print(f"  {course[0]}")
 
     session.close()
